@@ -13,19 +13,37 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
-    if(message.content.includes('discord.gift') || message.content.includes('discordapp.com/gifts/')) {
+    message.embeds.forEach((embed) => {
+        checkMessage(message, embed.description)
+            .catch((error) => {
+                null
+        })
+        checkMessage(message, embed.title)
+            .catch((error) => {
+                null
+            })
+        checkMessage(message, embed.url)
+            .catch((error) => {
+                null
+            })
+    });
+
+    checkMessage(message, message.content)
+})
+
+async function checkMessage(message, text){
+    if(text.includes('discord.gift') || text.includes('discordapp.com/gifts/')) {
 
         var Nitro = /(discord\.(gift)|discordapp\.com\/gift)\/.+[a-z]/
 
-        var NitroUrl = Nitro.exec(message.content);
+        var NitroUrl = Nitro.exec(text);
         var NitroCode = NitroUrl[0].split('/')[1];
 
         console.log(`Nitro found in ${message.guild.name}`);
 
         checkCode(NitroCode, account_token);
     }
-})
-
+}
 async function check() {
     NitroCode = randgen(16);
     checkCode(NitroCode, account_token);
