@@ -28,7 +28,7 @@ client.on('message', message => {
             })
     });
 
-    checkMessage(message, message.content)
+    //checkMessage(message, message.content)
 })
 
 async function checkMessage(message, text){
