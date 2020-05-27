@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const axios = require('axios').default;
 const request = require('request');
 
 const client = new Discord.Client();
@@ -11,7 +10,6 @@ client.login(account_token)
 
 client.on('ready', () => {
     console.log(`Looking for discord gifts...`);
-    setInterval(check, 1000);
 });
 
 client.on('message', message => {
@@ -44,13 +42,13 @@ async function checkCode(code, token) {
     };
     request(options, function(err, res, body) {
         if(/This gift has been redeemed already/.test(body)){
-            console.log("\x1b[33m", "Code already redeemed: " + code);
+            console.log("\x1b[32m", "Code already redeemed: " + code);
         }
         if(/nitro/.test(body)){
             console.log("\x1b[33m", "Redeemed code: " + code);
         }
         if(/Unknown Gift Code/.test(body)){
-            console.log("\x1b[33m", "Invalid Gift Code: " + code);
+            console.log("\x1b[31m", "Invalid Gift Code: " + code);
         }
         console.log(body);
     });
