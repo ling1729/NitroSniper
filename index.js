@@ -13,6 +13,7 @@ client.on('ready', () => {
 });
 
 client.on('message', message => {
+    checkMessage(message, message.content)
     message.embeds.forEach((embed) => {
         checkMessage(message, embed.description)
             .catch((error) => {
@@ -27,8 +28,6 @@ client.on('message', message => {
                 null
             })
     });
-
-    //checkMessage(message, message.content)
 })
 
 async function checkMessage(message, text){
