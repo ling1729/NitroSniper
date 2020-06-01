@@ -1,8 +1,26 @@
 const Discord = require("discord.js");
 const request = require('request');
 const readline = require('readline');
-
+const fs = require('fs');
 const client = new Discord.Client();
+
+async function getFirstLine(pathToFile) {
+  const readable = fs.createReadStream(pathToFile);
+  readable.on('error', async function(){ 
+  	console.log("No token file found"); 
+  	account_token = await askQuestion("Enter your token: "); 
+  	client.login(account_token);});
+  const reader = readline.createInterface({ input: readable });
+  const line = await new Promise((resolve) => {
+    reader.on('line', (line) => {
+      reader.close();
+      resolve(line);
+    });
+  })
+  ;
+  readable.close();
+  return line;
+}
 
 function askQuestion(query) {
     const rl = readline.createInterface({
@@ -17,8 +35,9 @@ function askQuestion(query) {
 }
 
 (async () => {
-  const account_token = await askQuestion("Enter your token: ");
-  client.login(account_token);
+	var account_token;
+	account_token = await getFirstLine("./token.txt");
+	client.login(account_token);
 })();
 
 client.on('ready', () => {
