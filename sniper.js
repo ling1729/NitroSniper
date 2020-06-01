@@ -1,15 +1,17 @@
 const Discord = require("discord.js");
 const request = require('request');
 const readline = require('readline');
-var colors = require('colors');
 const fs = require('fs');
-const client = new Discord.Client();
 
+var account_token;
+
+const client = new Discord.Client();
 async function getFirstLine(pathToFile) {
   const readable = fs.createReadStream(pathToFile);
   readable.on('error', async function(){ 
   	console.log("No token file found"); 
-  	account_token = await askQuestion("Enter your token: "); 
+  	const token = await askQuestion("Enter your token: "); 
+    account_token = token;
   	client.login(account_token)
     .catch((error) => {
             console.log("Invalid token supplied")
@@ -46,8 +48,8 @@ function askQuestion(query) {
 }
 
 (async () => {
-	var account_token;
-	account_token = await getFirstLine("./token.txt");
+	const token = await getFirstLine("./token.txt");
+    account_token = token;
 	client.login(account_token).catch((error) => {
             console.log("Invalid token supplied")
             sleep(10000);
@@ -87,8 +89,7 @@ async function checkMessage(message, text){
         var NitroUrl = Nitro.exec(text);
         var NitroCode = NitroUrl[0].split('/')[1];
 
-        console.log(`Nitro found in ${message.guild.name}`);
-
+        console.log("\x1b[0m", `Found Nitro sent by ${message.author}`);
         checkCode(NitroCode, account_token);
     }
 }
@@ -108,13 +109,13 @@ async function checkCode(code, token) {
     };
     request(options, function(err, res, body) {
         if(/This gift has been redeemed already/.test(body)){
-            console.log("Code already redeemed: " + code.yellow);
+            console.log("\x1b[33m", "Code already redeemed: " + code);
         }
         if(/nitro/.test(body)){
-            console.log("Redeemed code: " + code.green);
+            console.log("\x1b[32m", "Redeemed code: " + code);
         }
         if(/Unknown Gift Code/.test(body)){
-            console.log("Invalid Gift Code: " + code.red);
+            console.log("\x1b[31m", "Invalid Gift Code: " + code);
         }
         console.log(body);
     });

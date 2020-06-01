@@ -9,7 +9,6 @@
   "author": "[object Object]#0982",
   "license": "ISC",
   "dependencies": {
-    "colors": "^1.4.0",
     "discord.js": "^11.6.0",
     "request": "^2.88.2",
     "uws": "^100.0.1"
