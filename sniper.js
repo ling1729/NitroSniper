@@ -33,7 +33,7 @@ function sleep(ms) {
   return new Promise((resolve) => {
     setTimeout(resolve, ms);
   });
-}   
+}
 
 function askQuestion(query) {
     const rl = readline.createInterface({
@@ -51,7 +51,7 @@ function askQuestion(query) {
 	const token = await getFirstLine("./token.txt");
     account_token = token;
 	client.login(account_token).catch((error) => {
-            console.log("Invalid token supplied")
+            console.log("Invalid token supplied, check token.txt")
             sleep(10000);
         });
 })();
