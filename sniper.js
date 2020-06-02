@@ -65,20 +65,6 @@ client.on('message', message => {
         .catch((error) => {
             null
         })
-    message.embeds.forEach((embed) => {
-        checkMessage(message, embed.description)
-            .catch((error) => {
-                null
-            })
-        checkMessage(message, embed.title)
-            .catch((error) => {
-                null
-            })
-        checkMessage(message, embed.url)
-            .catch((error) => {
-                null
-            })
-    });
 })
 
 async function checkMessage(message, text){
@@ -92,10 +78,6 @@ async function checkMessage(message, text){
         console.log("\x1b[0m", `Found Nitro sent by ${message.author.username}`);
         checkCode(NitroCode, account_token);
     }
-}
-async function check() {
-    NitroCode = randgen(16);
-    checkCode(NitroCode, account_token);
 }
 
 
@@ -120,19 +102,4 @@ async function checkCode(code, token) {
         console.log(body);
     });
 }
-
-function randgen(length){
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-    let result = '';
-    let chanceNum = 10;
-    for(let i = 0; i < length; i++){
-        if(Math.random() < 0.1)
-            result += Math.floor(Math.random() * 10);
-        else
-            result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-}
-
-
 
