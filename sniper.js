@@ -7,6 +7,7 @@ const checkMain = true; // whether or not to check messages for nitro on your ma
 
 var clients = []; // stores all the clients for each token
 var tokens = []; // stores the tokens
+var channels = new Map(); // stores all the channels to avoid claiming on same channel on multiple accounts
 var mainToken; // the token you want to claim nitro on
 
 (async () => {
@@ -36,10 +37,19 @@ var mainToken; // the token you want to claim nitro on
     clients[i].on('ready', () => { 
       console.log("\x1b[0m", `Connected to account: ` + clients[i].user.username + (i == 0 ? " (main) " : ""));
     }); 
-
+    
+    // prevent checking a message more than once 
     clients[i].on('messageCreate', message => {
-      parseMessage(message, message.content, clients[i].user.username);
+      if(channels.has(message.channel.id)){
+        if(channels.get(message.channel.id) == clients[i].user.username)
+          parseMessage(message, message.content, clients[i].user.username);
+      }
+      else {
+        channels.set(message.channel.id, clients[i].user.username);
+        parseMessage(message, message.content, clients[i].user.username);
+      }
     })
+
     clients[i].connect();
   }
 
