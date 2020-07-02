@@ -66,7 +66,12 @@ var mainToken; // the token you want to claim nitro on
 // searches for a nitro code in the message using regex
 async function parseMessage(message, text, username){
   if(text.includes('discord.gift/') || text.includes('discordapp.com/gifts/')) {
-    checkCode(/discord(app\.com){0,1}(\.|\/)gift\/[^\s.,!?/]+/.exec(text)[0].split('/')[1], mainToken, `Nitro found in ${message.channel.guild.name} by ${username}`);
+    try {
+      let code = /discord(app\.com){0,1}(\.|\/)gift\/[^\s.,!?/]+/.exec(text)[0].split('/')[1];
+      checkCode(code, mainToken, `Nitro found in ${message.channel.guild.name} by ${username}`);
+    } catch (error) {
+      console.log("\x1b[0m", "Error parsing text: " + text);
+    }
   }
 }
 
